@@ -1,18 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
+import * as serviceWorker from "./serviceWorker";
+import { setupWebSocket } from "./websocket";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+setupWebSocket("wss://api-pub.bitfinex.com/ws/2").then(
+  ({ listen, sendMessage }) =>
+    ReactDOM.render(
+      <Provider store={store}>
+        <App listen={listen} sendMessage={sendMessage} />
+      </Provider>,
+      document.getElementById("root")
+    )
 );
 
 // If you want your app to work offline and load faster, you can change
